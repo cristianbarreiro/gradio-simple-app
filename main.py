@@ -1,29 +1,20 @@
 import gradio as gr
 
-def calculator(number1, number2, operation):
-    if operation == "Addition":
-        return number1 + number2
-    elif operation == "Subtraction":
-        return number1 - number2
-    elif operation == "Multiplication":
-        return number1 * number2
-    elif operation == "Division":
-        if number2 != 0:
-            return number1 / number2
-        else:
-            return "Error: Division by zero is not allowed."
+def check_answer(selected_option):
+    correct_answer = "Python"
+
+    if selected_option == correct_answer:   
+        return "Correct! Python is often referred to as the snake language."
+    else:
+        return "Incorrect. The correct answer is Python."
 
 interface = gr.Interface(
-    fn=calculator,
-    inputs=[  
-        gr.Number(label="First Number"),
-        gr.Number(label="Second Number)"),
-        gr.Dropdown(choices=["Addition", 
-                             "Subtraction", 
-                             "Multiplication", 
-                             "Division"], label="Operation")
-        ],
-     outputs=gr.Number(label="Result")
+    fn=check_answer,
+    inputs=gr.Radio(
+        choices=["Java", "C++", "Python", "JavaScript"],
+        label="Which programming language is known as the snake language?"
+    ),
+    outputs=gr.Textbox(label="Your Result")
 )
 
 interface.launch()
