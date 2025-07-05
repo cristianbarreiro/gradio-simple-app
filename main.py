@@ -1,17 +1,22 @@
 import gradio as gr
+import asyncio
+import edge_tts
+import uuid
+import os
 
-def analyze_text(file):
-    text = file.name
+async def generar_audio(texto):
+    nombre_archivo = f"voz_{uuid.uuid4()}.mp3"
+    comunicador = edge_tts.Communicate(text=texto, voice="es-MX-DaliaNeural")  # Cambia la voz aquí si querés
+    await comunicador.save(nombre_archivo)
+    return nombre_archivo
 
-    with open(text, 'r', encoding='utf-8') as f:
-        content = f.read()
-    word_count = len(content.split())
-    return f"The file contains {word_count} words."
+def texto_a_voz(texto):
+    return asyncio.run(generar_audio(texto))
 
-interface = gr.Interface(
-    fn=analyze_text,
-    inputs= gr.File(label="Upload a file with two numbers (e.g., numbers.txt)"),
-     outputs=gr.Textbox(label="World Count Result")
-)
-
-interface.launch()
+gr.Interface(
+    fn=texto_a_voz,
+    inputs=gr.Textbox(label="Texto para convertir a voz"),
+    outputs=gr.Audio(label="Audio generado"),
+    title="Texto a Voz con Edge TTS",
+    description="Convierte texto a voz utilizando Microsoft Edge TTS (requiere conexión a internet)"
+).launch()
