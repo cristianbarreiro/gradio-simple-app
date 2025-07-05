@@ -1,29 +1,17 @@
 import gradio as gr
 
-def calculator(number1, number2, operation):
-    if operation == "Addition":
-        return number1 + number2
-    elif operation == "Subtraction":
-        return number1 - number2
-    elif operation == "Multiplication":
-        return number1 * number2
-    elif operation == "Division":
-        if number2 != 0:
-            return number1 / number2
-        else:
-            return "Error: Division by zero is not allowed."
+def analyze_text(file):
+    text = file.name
+
+    with open(text, 'r', encoding='utf-8') as f:
+        content = f.read()
+    word_count = len(content.split())
+    return f"The file contains {word_count} words."
 
 interface = gr.Interface(
-    fn=calculator,
-    inputs=[  
-        gr.Number(label="First Number"),
-        gr.Number(label="Second Number)"),
-        gr.Dropdown(choices=["Addition", 
-                             "Subtraction", 
-                             "Multiplication", 
-                             "Division"], label="Operation")
-        ],
-     outputs=gr.Number(label="Result")
+    fn=analyze_text,
+    inputs= gr.File(label="Upload a file with two numbers (e.g., numbers.txt)"),
+     outputs=gr.Textbox(label="World Count Result")
 )
 
 interface.launch()
