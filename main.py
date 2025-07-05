@@ -1,20 +1,20 @@
 import gradio as gr
 
-def check_answer(selected_option):
+def favorite_colors(selected_colors):
     correct_answer = "Python"
 
-    if selected_option == correct_answer:   
-        return "Correct! Python is often referred to as the snake language."
+    if selected_colors:   
+        return f"Your favorite color are: {', '.join(selected_colors)}"
     else:
-        return "Incorrect. The correct answer is Python."
+        return "Incorrect. You didn't select any colors."
 
 interface = gr.Interface(
-    fn=check_answer,
-    inputs=gr.Radio(
-        choices=["Java", "C++", "Python", "JavaScript"],
-        label="Which programming language is known as the snake language?"
+    fn=favorite_colors,
+    inputs=gr.CheckboxGroup(
+        choices=["Red", "Blue", "Green", "Yellow", "Black", "White"],
+        label="Select your favorite color",
     ),
-    outputs=gr.Textbox(label="Your Result")
+    outputs=gr.Textbox(label="Your Selected Color")
 )
 
 interface.launch()
