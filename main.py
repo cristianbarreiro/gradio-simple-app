@@ -1,29 +1,26 @@
+import pyttsx3
 import gradio as gr
+import tempfile
+import os
 
-def calculator(number1, number2, operation):
-    if operation == "Addition":
-        return number1 + number2
-    elif operation == "Subtraction":
-        return number1 - number2
-    elif operation == "Multiplication":
-        return number1 * number2
-    elif operation == "Division":
-        if number2 != 0:
-            return number1 / number2
-        else:
-            return "Error: Division by zero is not allowed."
+# Inicializar motor pyttsx3
+engine = pyttsx3.init()
 
-interface = gr.Interface(
-    fn=calculator,
-    inputs=[  
-        gr.Number(label="First Number"),
-        gr.Number(label="Second Number)"),
-        gr.Dropdown(choices=["Addition", 
-                             "Subtraction", 
-                             "Multiplication", 
-                             "Division"], label="Operation")
-        ],
-     outputs=gr.Number(label="Result")
+def texto_a_voz(texto):
+    # Crear archivo temporal para guardar el audio
+    with tempfile.NamedTemporaryFile(delete=False, suffix=".mp3") as f:
+        ruta_audio = f.name
+    # Guardar voz en archivo
+    engine.save_to_file(texto, ruta_audio)
+    engine.runAndWait()
+    return ruta_audio
+
+iface = gr.Interface(
+    fn=texto_a_voz,
+    inputs=gr.Textbox(label="Escribí el texto para convertir a voz"),
+    outputs=gr.Audio(label="Audio generado"),
+    title="Texto a Voz con pyttsx3 y Gradio",
+    description="Convierte texto a voz offline con pyttsx3."
 )
 
-interface.launch()
+iface.launch()
