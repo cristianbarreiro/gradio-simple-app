@@ -1,12 +1,12 @@
 import gradio as gr
 
-def reverse_text(text):
-    return text[::-1]
+def square_number(number):
+    return number ** 2
 
 interface = gr.Interface(
-    fn=reverse_text,
-    inputs=gr.Textbox(label="Enter Text"),
-     outputs=gr.Textbox(label="Reversed Text")
+    fn=square_number,
+    inputs=gr.Slider(minimum=0, maximum=100, step=1, label="Input Number"),
+     outputs=gr.Number(label="Result (Square of Input Number)"),
 )
 
 interface.launch()
