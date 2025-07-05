@@ -1,15 +1,12 @@
 import gradio as gr
 
-def add_numbers(num1, num2):
-    return num1 + num2
+def reverse_text(text):
+    return text[::-1]
 
 interface = gr.Interface(
-    fn=add_numbers,
-    inputs=[
-        gr.Number(label="Number 1"),
-        gr.Number(label="Number 2")
-    ],
-    outputs=gr.Number(label="Sum"),
+    fn=reverse_text,
+    inputs=gr.Textbox(label="Enter Text"),
+     outputs=gr.Textbox(label="Reversed Text")
 )
 
 interface.launch()
